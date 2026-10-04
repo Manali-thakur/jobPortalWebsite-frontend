@@ -1,0 +1,124 @@
+export const jobs = [];
+
+export default class JobModel {
+  constructor(
+    id,
+    jobcategory,
+    jobdesignation,
+    joblocation,
+    companyname,
+    salary,
+    applyby,
+    skillsrequired,
+    numberofopenings,
+  ) {
+    this.id = id;
+    this.jobcategory = jobcategory;
+    this.jobdesignation = jobdesignation;
+    this.joblocation = joblocation;
+    this.companyname = companyname;
+    this.salary = salary;
+    this.applyby = applyby;
+    this.skillsrequired = Array.isArray(skillsrequired)
+      ? skillsrequired
+      : String(skillsrequired || "")
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+    this.numberofopenings = numberofopenings;
+    this.jobposted = new Date();
+    this.applicants = [];
+  }
+
+  static allJobs() {
+    return jobs;
+  }
+
+  static addJob(
+    jobcategory,
+    jobdesignation,
+    joblocation,
+    companyname,
+    salary,
+    applyby,
+    skillsrequired,
+    numberofopenings,
+  ) {
+    const id = jobs.length + 1;
+    const newJob = new JobModel(
+      id,
+      jobcategory,
+      jobdesignation,
+      joblocation,
+      companyname,
+      salary,
+      applyby,
+      skillsrequired,
+      numberofopenings,
+    );
+    jobs.push(newJob);
+    return newJob;
+  }
+
+  static findJobById(id) {
+    return jobs.find((job) => job.id === Number(id));
+  }
+
+  static updateJob(
+    id,
+    jobcategory,
+    jobdesignation,
+    joblocation,
+    companyname,
+    salary,
+    applyby,
+    skillsrequired,
+    numberofopenings,
+  ) {
+    const job = JobModel.findJobById(id);
+    if (job) {
+      job.jobcategory = jobcategory;
+      job.jobdesignation = jobdesignation;
+      job.joblocation = joblocation;
+      job.companyname = companyname;
+      job.salary = salary;
+      job.applyby = applyby;
+      job.skillsrequired = Array.isArray(skillsrequired)
+        ? skillsrequired
+        : String(skillsrequired || "")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+      job.numberofopenings = numberofopenings;
+    }
+    return job;
+  }
+
+  static deleteJob(id) {
+    const index = jobs.findIndex((job) => job.id === Number(id));
+    if (index !== -1) {
+      jobs.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  static addApplicant(jobId, name, email, contact, resumePath) {
+    const job = JobModel.findJobById(jobId);
+    if (!job) return null;
+    const applicant = {
+      id: job.applicants.length + 1,
+      name,
+      email,
+      contact,
+      resumePath,
+    };
+    job.applicants.push(applicant);
+    return applicant;
+  }
+
+  static getApplicants(jobId) {
+    const job = JobModel.findJobById(jobId);
+    return job ? job.applicants : [];
+  }
+}
