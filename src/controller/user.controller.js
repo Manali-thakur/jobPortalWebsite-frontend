@@ -30,7 +30,7 @@ export default class UserController {
     const user = userModel.loginUser(email, password);
 
     if (!user) {
-      return res.render("user-login", { error: "Invalid email or password" });
+      return res.render("user-login", { error: "Wrong email or password" });
     }
     req.session.user = {
       id: user.id,
