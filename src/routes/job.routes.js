@@ -18,7 +18,6 @@ jobRouter.get("/jobs/:id/update", auth, jobController.getUpdateJob);
 jobRouter.post("/jobs/:id/update", auth, upload.single("logo"), jobController.postUpdateJob);
 
 // /jobs/:id/delete
-jobRouter.get("/jobs/:id/delete", auth, jobController.deleteJob);
 jobRouter.post("/jobs/:id/delete", auth, jobController.deleteJob);
 
 // /jobs/:id/applicants

@@ -3,7 +3,7 @@ import { sendConfirmationMail } from "../middleware/mail.middleware.js";
 
 export default class JobController {
   getJobs(req, res) {
-    res.render("list-all-jobs", { jobs: JobModel.allJobs() }); 
+    res.render("list-all-jobs", { jobs: JobModel.allJobs() });
   }
 
   getJobDetails(req, res) {
@@ -90,7 +90,7 @@ export default class JobController {
     res.redirect("/jobs");
   }
 
-  applyToJob(req, res) {
+  async applyToJob(req, res) {
     const { name, email, contact } = req.body;
     const job = JobModel.findJobById(req.params.id);
     if (!job) return res.status(404).render("404");
@@ -104,9 +104,11 @@ export default class JobController {
     );
     if (!applicant) return res.status(404).render("404");
 
-    sendConfirmationMail(email, name, job).catch((error) => {
+    try {
+      await sendConfirmationMail(email, name, job);
+    } catch (error) {
       console.error("Failed to send application confirmation email:", error);
-    });
+    }
     res.redirect(`/jobs/${job.id}`);
   }
 

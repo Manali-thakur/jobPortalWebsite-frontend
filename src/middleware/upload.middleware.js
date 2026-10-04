@@ -5,17 +5,23 @@ import { readFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const uploadsDirectory = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../../uploads",
-);
+// const uploadsDirectory = path.resolve(
+//   path.dirname(fileURLToPath(import.meta.url)),
+//   "../../uploads",
+// );
+const uploadsDirectory = process.env.VERCEL
+  ? "/tmp"
+  : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../uploads");
 
 mkdirSync(uploadsDirectory, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: uploadsDirectory,
   filename(req, file, callback) {
-    callback(null, `${randomUUID()}${path.extname(file.originalname).toLowerCase()}`);
+    callback(
+      null,
+      `${randomUUID()}${path.extname(file.originalname).toLowerCase()}`,
+    );
   },
 });
 
@@ -44,7 +50,10 @@ export function uploadResume(req, res, next) {
     }
 
     if (!req.file) {
-      return res.status(400).type("text").send("Please upload your resume as a PDF.");
+      return res
+        .status(400)
+        .type("text")
+        .send("Please upload your resume as a PDF.");
     }
 
     let fileContents;
@@ -60,7 +69,10 @@ export function uploadResume(req, res, next) {
       } catch (unlinkError) {
         return next(unlinkError);
       }
-      return res.status(400).type("text").send("The uploaded file is not a valid PDF.");
+      return res
+        .status(400)
+        .type("text")
+        .send("The uploaded file is not a valid PDF.");
     }
 
     next();

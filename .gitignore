@@ -1,0 +1,20 @@
+# dependencies
+node_modules
+
+# uploaded resumes
+uploads
+
+# secrets
+.env
+
+# Vercel local files
+.vercel
+
+# logs
+*.log
+npm-debug.log*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode

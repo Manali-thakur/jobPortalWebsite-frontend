@@ -20,6 +20,7 @@ if (!sessionSecret) {
 }
 
 const server = express();
+server.set("trust proxy", 1); // Vercel sits behind an HTTPS proxy
 
 //  ejs setup
 server.set("view engine", "ejs");
@@ -35,13 +36,15 @@ server.use((req, res, next) => {
 });
 server.use(
   session({
-    secret: sessionSecret,
+    // secret: sessionSecret,
+    secret: process.env.SESSION_SECRET || "dev-secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production", // HTTPS only when deployed
       httpOnly: true,
-      sameSite: "lax",
+    //   sameSite: "lax",
     },
   }),
 );
@@ -51,8 +54,15 @@ server.use((req, res, next) => {
 });
 server.use(express.static(path.join(__dirname, "public"))); //making file publically available
 server.use("/css", express.static(path.join(__dirname, "src", "views", "css")));
-server.use("/images", express.static(path.join(__dirname, "src", "views", "images")));
-server.use("/uploads", express.static(path.join(__dirname, "uploads")));
+server.use(
+  "/images",
+  express.static(path.join(__dirname, "src", "views", "images")),
+);
+// server.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// /tmp on Vercel (read-only disk), uploads/ locally
+const uploadDir = process.env.VERCEL ? "/tmp" : path.join(__dirname, "uploads");
+server.use("/uploads", express.static(uploadDir));
+
 server.use(setLastVisit);
 server.use(expressEjsLayouts);
 server.set("layout", "layouts/layout"); // set default layout
