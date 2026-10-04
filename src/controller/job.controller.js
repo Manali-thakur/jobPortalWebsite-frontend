@@ -2,7 +2,7 @@ import JobModel from "../model/job.model.js";
 
 export default class JobController {
   getJobs(req, res) {
-    res.render("list-all-jobs", { jobs: JobModel.allJobs() });
+    res.render("list-all-jobs", { jobs: JobModel.allJobs() }); 
   }
 
   getJobDetails(req, res) {
@@ -106,5 +106,24 @@ export default class JobController {
     const job = JobModel.findJobById(req.params.id);
     if (!job) return res.status(404).render("404");
     res.render("all-applicants", { allApplicants: job.applicants, job });
+  }
+
+  postUpdateApplicant(req, res) {
+    const applicant = JobModel.updateApplicant(
+      req.params.id,
+      req.params.applicantId,
+      req.body,
+    );
+    if (!applicant) return res.status(404).render("404");
+    res.redirect(`/jobs/${req.params.id}/applicants`);
+  }
+
+  deleteApplicant(req, res) {
+    const deleted = JobModel.deleteApplicant(
+      req.params.id,
+      req.params.applicantId,
+    );
+    if (!deleted) return res.status(404).render("404");
+    res.redirect(`/jobs/${req.params.id}/applicants`);
   }
 }

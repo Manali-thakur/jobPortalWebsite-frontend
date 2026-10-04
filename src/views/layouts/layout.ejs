@@ -348,13 +348,13 @@
             <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdowns">
               <% if (locals.user) { %>  
                 <div class="d-flex">
-                  <div style="margin-right: 10px;"><%= user.name %></div>
+                  <div style="margin-right: 10px;">Hi, <%= locals.user.name %></div>
                   <i class="fa fa-chevron-down fa-2xs" style="margin-top: 10px;font-size: 14px;"></i>
                 </div>    
 
               <% } else { %>
                 <div class="d-flex">
-                  <div style="margin-right: 10px;">Recruiter</div>
+                  <div style="margin-right: 10px;">Recruiter Login</div>
                   <i class="fa fa-chevron-down fa-2xs" style="margin-top: 10px;font-size: 14px;"></i>
                 </div>    
               <% } %>
@@ -362,9 +362,11 @@
             <ul class="dropdown-menu">
               <% if (locals.user) { %>
                 <li>
-                  <a class="dropdown-item" href="/logout" style="font-size: 14px;">
-                    <i class="fas fa-sign-out-alt me-2" style="font-size: 12px;"></i>Logout
-                  </a>
+                  <form action="/logout" method="post">
+                    <button class="dropdown-item" type="submit" style="font-size: 14px;">
+                      <i class="fas fa-sign-out-alt me-2" style="font-size: 12px;"></i>Logout
+                    </button>
+                  </form>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
@@ -377,7 +379,7 @@
               <% } else { %>
                 <li>
                   <a class="dropdown-item" href="/login" style="font-size: 14px;">
-                    <i class="fas fa-sign-in-alt me-2" style="font-size: 12px;"></i>Login
+                    <i class="fas fa-sign-in-alt me-2" style="font-size: 12px;"></i>Recruiter Login
                   </a>
                 </li>
               <% } %>

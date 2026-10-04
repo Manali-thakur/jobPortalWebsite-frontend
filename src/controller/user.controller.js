@@ -32,10 +32,19 @@ export default class UserController {
     if (!user) {
       return res.render("user-login", { error: "Invalid email or password" });
     }
-    res.redirect("/jobs"); // sessions come in Step 9
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+    res.redirect("/jobs");
   }
 
-  logout(req, res) {
-    res.redirect("/");
+  logout(req, res, next) {
+    req.session.destroy((error) => {
+      if (error) return next(error);
+      res.clearCookie("connect.sid", { path: "/" });
+      res.redirect("/");
+    });
   }
 }

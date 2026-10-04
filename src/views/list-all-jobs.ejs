@@ -147,6 +147,12 @@
               <a href="/jobs/<%= job.id %>" class="apply-btn btn btn-primary">
                 <i class="bi bi-send"></i> View
               </a>
+              <% if (locals.user) { %>
+                <a href="/jobs/<%= job.id %>/update" class="btn btn-outline-primary">Update</a>
+                <form action="/jobs/<%= job.id %>/delete" method="post" class="d-inline">
+                  <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+              <% } %>
             </div>
           </div>
         </div>

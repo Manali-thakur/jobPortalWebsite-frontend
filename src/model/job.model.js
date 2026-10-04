@@ -34,6 +34,7 @@ export default class JobModel {
     this.companyDescription = details.companyDescription || "";
     this.jobposted = new Date();
     this.applicants = [];
+    this.nextApplicantId = 1;
   }
 
   static allJobs() {
@@ -120,8 +121,12 @@ export default class JobModel {
   static addApplicant(jobId, name, email, contact, resumePath) {
     const job = JobModel.findJobById(jobId);
     if (!job) return null;
+    const applicantId =
+      job.nextApplicantId ??
+      Math.max(0, ...job.applicants.map((item) => item.id)) + 1;
+    job.nextApplicantId = applicantId + 1;
     const applicant = {
-      id: job.applicants.length + 1,
+      id: applicantId,
       name,
       email,
       contact,
@@ -134,5 +139,30 @@ export default class JobModel {
   static getApplicants(jobId) {
     const job = JobModel.findJobById(jobId);
     return job ? job.applicants : [];
+  }
+
+  static updateApplicant(jobId, applicantId, details) {
+    const applicant = JobModel.getApplicants(jobId).find(
+      (item) => item.id === Number(applicantId),
+    );
+    if (!applicant) return null;
+
+    applicant.name = details.name;
+    applicant.email = details.email;
+    applicant.contact = details.contact;
+    return applicant;
+  }
+
+  static deleteApplicant(jobId, applicantId) {
+    const job = JobModel.findJobById(jobId);
+    if (!job) return false;
+
+    const index = job.applicants.findIndex(
+      (applicant) => applicant.id === Number(applicantId),
+    );
+    if (index === -1) return false;
+
+    job.applicants.splice(index, 1);
+    return true;
   }
 }

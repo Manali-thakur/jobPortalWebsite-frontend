@@ -16,9 +16,11 @@
             <th>
               <input type="checkbox" class="form-check-input" />
             </th>
-            <th>Contact</th>
+            <th>Name</th>
             <th>Email</th>
+            <th>Contact</th>
             <th>Resume</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -27,15 +29,26 @@
             <td>
               <input type="checkbox" class="form-check-input" />
             </td>
-            <td class="d-flex align-items-center">
-              <img src="https://ui-avatars.com/api/?name=<%=applicant.name%>&background=random" class="avatar-img me-2"/>
-              <span><%=applicant.name%></span>
-            </td>
-            <td><%=applicant.email%></td>
             <td>
-              <a class="badge badge-primary" href="/uploads/<%=applicant.resumePath%>" target="_blank">
-                View Resume
-              </a>
+              <img src="https://ui-avatars.com/api/?name=<%=applicant.name%>&background=random" class="avatar-img me-2"/>
+              <input class="form-control" form="update-applicant-<%=applicant.id%>" name="name" value="<%=applicant.name%>" required>
+            </td>
+            <td><input class="form-control" form="update-applicant-<%=applicant.id%>" name="email" type="email" value="<%=applicant.email%>" required></td>
+            <td><input class="form-control" form="update-applicant-<%=applicant.id%>" name="contact" value="<%=applicant.contact%>" required></td>
+            <td>
+              <% if (applicant.resumePath) { %>
+                <a class="badge badge-primary" href="/uploads/<%=applicant.resumePath%>" target="_blank" rel="noopener">View Resume</a>
+              <% } else { %>
+                <span class="text-muted">No resume</span>
+              <% } %>
+            </td>
+            <td>
+              <form id="update-applicant-<%=applicant.id%>" action="/jobs/<%=job.id%>/applicants/<%=applicant.id%>/update" method="post">
+                <button class="btn btn-sm btn-primary" type="submit">Update</button>
+              </form>
+              <form action="/jobs/<%=job.id%>/applicants/<%=applicant.id%>/delete" method="post" class="mt-1">
+                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+              </form>
             </td>
           </tr>
           <%})%>

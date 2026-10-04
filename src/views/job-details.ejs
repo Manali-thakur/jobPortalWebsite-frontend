@@ -61,10 +61,10 @@
             </svg>
             Edit
           </a>
-          <a class="action-btn bookmark-btn" href="/jobs/<%=job.id%>/delete">
+          <form action="/jobs/<%=job.id%>/delete" method="post">
             <i class="fa-regular fa-trash-can fa-lg" style="color: #6b7280;"></i>
-            Delete
-          </a>
+            <button class="action-btn bookmark-btn" type="submit">Delete</button>
+          </form>
           <%}%>
         </div>
 
