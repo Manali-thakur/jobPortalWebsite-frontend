@@ -17,6 +17,9 @@ server.set("views", path.join(__dirname, "src", "views"));
 server.use(express.urlencoded({ extended: true }));
 // server.use(express.json()); //read data from req.body
 server.use(express.static(path.join(__dirname, "public"))); //making file publically available
+server.use("/css", express.static(path.join(__dirname, "src", "views", "css")));
+server.use("/images", express.static(path.join(__dirname, "src", "views", "images")));
+server.use("/uploads", express.static(path.join(__dirname, "uploads")));
 server.use(expressEjsLayouts);
 server.set("layout", "layouts/layout"); // set default layout
 

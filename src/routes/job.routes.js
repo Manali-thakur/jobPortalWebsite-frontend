@@ -1,5 +1,6 @@
 import express from "express";
 import JobController from "../controller/job.controller.js";
+import upload from "../middleware/upload.middleware.js";
 
 const jobRouter = express.Router();
 const jobController = new JobController();
@@ -8,22 +9,22 @@ const jobController = new JobController();
 
 jobRouter.get("/jobs/new", jobController.getNewJob); // must stay above /jobs/:id
 jobRouter.get("/jobs", jobController.getJobs);
-jobRouter.post("/jobs", jobController.postNewJob);
+jobRouter.post("/jobs", upload.single("logo"), jobController.postNewJob);
 jobRouter.get("/jobs/:id", jobController.getJobDetails);
 
 // /jobs/:id/update
 jobRouter.get("/jobs/:id/update", jobController.getUpdateJob);
-jobRouter.post("/jobs/:id/update", jobController.postUpdateJob);
+jobRouter.post("/jobs/:id/update", upload.single("logo"), jobController.postUpdateJob);
 
 // /jobs/:id/delete
 jobRouter.get("/jobs/:id/delete", jobController.deleteJob);
 
 // /jobs/:id/applicants
 jobRouter.get("/jobs/:id/applicants", jobController.getApplicants);
-jobRouter.post("/jobs/:id/applicants", jobController.applyToJob);
+jobRouter.post("/jobs/:id/applicants", upload.single("resume"), jobController.applyToJob);
 
 // /apply/:id
-jobRouter.post("/apply/:id", jobController.applyToJob);
+jobRouter.post("/apply/:id", upload.single("resume"), jobController.applyToJob);
 
 // /404
 // jobRouter.get("/404", (req, res) => res.status(404).render("404"));

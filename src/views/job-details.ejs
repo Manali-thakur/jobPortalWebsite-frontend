@@ -3,32 +3,32 @@
   <div class="page-header">
     <div class="jd-container-sm">
       <div class="breadcrumb">
-        <a href="/">Home</a> / <a href="/jobs">Jobs</a> / <span><%= data.job_designation %></span>
+        <a href="/">Home</a> / <a href="/jobs">Jobs</a> / <span><%= job.jobdesignation %></span>
       </div>
-      <h1 class="job-title"><%= data.job_designation %></h1>
+      <h1 class="job-title"><%= job.jobdesignation %></h1>
       <div class="company-info">
-        <img src="/<%= data.logo%>" alt="<%= data.company_name %>" class="company-logo">
+        <img src="<%= job.logo %>" alt="<%= job.companyname %>" class="company-logo">
         <div>
-          <h2 class="company-name"><%= data.company_name %></h2>
+          <h2 class="company-name"><%= job.companyname %></h2>
           <div class="job-meta">
             <span class="job-location">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" />
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21C16 17 20 13.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 13.4183 8 17 12 21Z" />
               </svg>
-              <%= data.job_location %>
+              <%= job.joblocation %>
             </span>
             <span class="job-type">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <%= data.job_category %>
+              <%= job.jobcategory %>
             </span>
             <span class="job-salary">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>
-              <%= data.salary %>
+              <%= job.salary %>
             </span>
           </div>
         </div>
@@ -54,14 +54,14 @@
             </svg>
             Share
           </button>
-          <%if(user){%>
-          <a class="action-btn bookmark-btn" href="/job/update/<%=data.id%>">
+          <%if(locals.user){%>
+          <a class="action-btn bookmark-btn" href="/jobs/<%=job.id%>/update">
             <svg class="feather feather-edit" fill="none" width="18" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
             </svg>
             Edit
           </a>
-          <a class="action-btn bookmark-btn" href="/job/delete/<%=data.id%>">
+          <a class="action-btn bookmark-btn" href="/jobs/<%=job.id%>/delete">
             <i class="fa-regular fa-trash-can fa-lg" style="color: #6b7280;"></i>
             Delete
           </a>
@@ -99,7 +99,7 @@
           <h3 class="section-heading">Requirements</h3>
           <div class="section-content">
             <ul class="modern-list">
-              <li> <%= data.experience%> of frontend development experience with strong expertise in React.js & TypeScript</li>
+              <li> <%= job.experience%> of frontend development experience with strong expertise in React.js & TypeScript</li>
               <li> Deep knowledge of component-based architecture, hooks, and state management best practices</li>
               <li> Strong skills in HTML5, CSS3, and styling with Material UI (Mui) and JSS</li>
               <li> Experience with frontend performance optimization and best practices</li>
@@ -196,7 +196,7 @@
               </div>
               <div class="info-content">
                 <div class="info-label">Application Deadline</div>
-                <div class="deadline-value"><%= data.apply_by %></div>
+                <div class="deadline-value"><%= job.applyby %></div>
               </div>
             </div>
             
@@ -209,19 +209,19 @@
               </div>
               <div class="info-content">
                 <div class="info-label">Open Positions</div>
-                <div class="positions-value"><%= data.number_of_openings %></div>
+                <div class="positions-value"><%= job.numberofopenings %></div>
               </div>
             </div>
 
             <!-- Applicants -->
-            <a href="/job/applicants/<%= data.id %>" class="applicants-link">
+            <a href="/jobs/<%= job.id %>/applicants" class="applicants-link">
               <div class="info-icon applicants-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z" />
                 </svg>
               </div>
               <div class="info-content">
-                <div class="applicants-count"><%= data.applicants.length %> Applicants</div>
+                <div class="applicants-count"><%= job.applicants.length %> Applicants</div>
               </div>
             </a>
           </div>
@@ -230,7 +230,7 @@
           <div class="info-section">
             <div class="section-title">Required Skills</div>
             <div class="skills-container">
-              <% data.skills_required.forEach((skill) => { %>
+              <% job.skillsrequired.forEach((skill) => { %>
                 <div class="skill-badge"><%= skill %></div>
               <% }) %>
             </div>
@@ -253,29 +253,29 @@
             <h3>About the Company</h3>
           </div>
           <div class="company-card-content">
-            <img src="/<%= data.logo%>" alt="<%= data.company_name %>" class="company-detail-logo">
-            <h4><%= data.company_name %></h4>
+            <img src="<%= job.logo %>" alt="<%= job.companyname %>" class="company-detail-logo">
+            <h4><%= job.companyname %></h4>
             <div class="company-info-row">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0m9-4.5v4.5l3 3" />
               </svg>
-              <span>Founded: <%= data.company_founded %></span>
+              <span>Founded: <%= job.companyFounded %></span>
             </div>
             <div class="company-info-row">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm15 7v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75" />
               </svg>
-              <span><%= data.employees %></span>
+              <span><%= job.employees %></span>
             </div>
             <div class="company-info-row">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" />
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21C16 17 20 13.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 13.4183 8 17 12 21Z" />
               </svg>
-              <span><%= data.job_location %></span>
+              <span><%= job.joblocation %></span>
             </div>
-            <p class="company-description"><%= data.company_description %></p>
-            <a href="www.<%= data.company_name%>.com" target="_blank" class="company-website-link">
+            <p class="company-description"><%= job.companyDescription %></p>
+            <a href="https://www.<%= job.companyname%>.com" target="_blank" class="company-website-link">
               Visit Website
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -319,7 +319,7 @@
 </div>
 
 <!-- Step 1: Name & Email -->
-<form id="multiStepForm" action="/apply/<%=data.id%>" method="post" enctype="multipart/form-data">
+<form id="multiStepForm" action="/apply/<%=job.id%>" method="post" enctype="multipart/form-data">
 <div class="modal fade" id="step1" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0">

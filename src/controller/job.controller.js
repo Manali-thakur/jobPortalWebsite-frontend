@@ -17,15 +17,13 @@ export default class JobController {
 
   postNewJob(req, res) {
     const {
-      jobcategory,
-      jobdesignation,
-      joblocation,
-      companyname,
+      job_category: jobcategory,
+      job_designation: jobdesignation,
+      job_location: joblocation,
+      company_name: companyname,
       salary,
-      applyby,
-      skillsrequired,
-      numberofopenings,
     } = req.body;
+    const skillsrequired = req.body.skills_required;
 
     JobModel.addJob(
       jobcategory,
@@ -33,9 +31,15 @@ export default class JobController {
       joblocation,
       companyname,
       salary,
-      applyby,
+      req.body.apply_by,
       skillsrequired,
-      numberofopenings,
+      req.body.number_of_openings,
+      {
+        experience: req.body.experience,
+        companyFounded: req.body.company_founded,
+        employees: req.body.employees,
+        logo: req.file ? `/uploads/${req.file.filename}` : undefined,
+      },
     );
     res.redirect("/jobs");
   }
@@ -48,15 +52,14 @@ export default class JobController {
 
   postUpdateJob(req, res) {
     const {
-      jobcategory,
-      jobdesignation,
-      joblocation,
-      companyname,
+      job_category: jobcategory,
+      job_designation: jobdesignation,
+      job_location: joblocation,
+      company_name: companyname,
       salary,
-      applyby,
-      skillsrequired,
-      numberofopenings,
     } = req.body;
+    const existingJob = JobModel.findJobById(req.params.id);
+    if (!existingJob) return res.status(404).render("404");
 
     const job = JobModel.updateJob(
       req.params.id,
@@ -65,9 +68,15 @@ export default class JobController {
       joblocation,
       companyname,
       salary,
-      applyby,
-      skillsrequired,
-      numberofopenings,
+      req.body.apply_by,
+      req.body.skills_required,
+      req.body.number_of_openings,
+      {
+        experience: req.body.experience,
+        companyFounded: req.body.company_founded,
+        employees: req.body.employees,
+        logo: req.file ? `/uploads/${req.file.filename}` : existingJob.logo,
+      },
     );
 
     if (!job) return res.status(404).render("404");
@@ -87,7 +96,7 @@ export default class JobController {
       name,
       email,
       contact,
-      "",
+      req.file ? req.file.filename : "",
     );
     if (!applicant) return res.status(404).render("404");
     res.redirect(`/jobs/${req.params.id}`);
@@ -96,6 +105,6 @@ export default class JobController {
   getApplicants(req, res) {
     const job = JobModel.findJobById(req.params.id);
     if (!job) return res.status(404).render("404");
-    res.render("all-applicants", { job });
+    res.render("all-applicants", { allApplicants: job.applicants, job });
   }
 }

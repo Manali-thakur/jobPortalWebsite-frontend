@@ -11,6 +11,7 @@ export default class JobModel {
     applyby,
     skillsrequired,
     numberofopenings,
+    details = {},
   ) {
     this.id = id;
     this.jobcategory = jobcategory;
@@ -26,6 +27,11 @@ export default class JobModel {
           .map((s) => s.trim())
           .filter(Boolean);
     this.numberofopenings = numberofopenings;
+    this.experience = details.experience || "";
+    this.companyFounded = details.companyFounded || "";
+    this.employees = details.employees || "";
+    this.logo = details.logo || "/images/logo.png";
+    this.companyDescription = details.companyDescription || "";
     this.jobposted = new Date();
     this.applicants = [];
   }
@@ -43,6 +49,7 @@ export default class JobModel {
     applyby,
     skillsrequired,
     numberofopenings,
+    details = {},
   ) {
     const id = jobs.length + 1;
     const newJob = new JobModel(
@@ -55,6 +62,7 @@ export default class JobModel {
       applyby,
       skillsrequired,
       numberofopenings,
+      details,
     );
     jobs.push(newJob);
     return newJob;
@@ -74,6 +82,7 @@ export default class JobModel {
     applyby,
     skillsrequired,
     numberofopenings,
+    details = {},
   ) {
     const job = JobModel.findJobById(id);
     if (job) {
@@ -90,6 +99,11 @@ export default class JobModel {
             .map((s) => s.trim())
             .filter(Boolean);
       job.numberofopenings = numberofopenings;
+      job.experience = details.experience || "";
+      job.companyFounded = details.companyFounded || "";
+      job.employees = details.employees || "";
+      job.companyDescription = details.companyDescription || "";
+      if (details.logo) job.logo = details.logo;
     }
     return job;
   }
