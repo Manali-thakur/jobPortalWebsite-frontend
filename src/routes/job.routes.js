@@ -1,7 +1,7 @@
 import express from "express";
 import JobController from "../controller/job.controller.js";
 import auth from "../middleware/auth.middleware.js";
-import upload from "../middleware/upload.middleware.js";
+import upload, { uploadResume } from "../middleware/upload.middleware.js";
 
 const jobRouter = express.Router();
 const jobController = new JobController();
@@ -33,10 +33,10 @@ jobRouter.post(
   auth,
   jobController.deleteApplicant,
 );
-jobRouter.post("/jobs/:id/applicants", upload.single("resume"), jobController.applyToJob);
+jobRouter.post("/jobs/:id/applicants", uploadResume, jobController.applyToJob);
 
 // /apply/:id
-jobRouter.post("/apply/:id", upload.single("resume"), jobController.applyToJob);
+jobRouter.post("/apply/:id", uploadResume, jobController.applyToJob);
 
 // /404
 // jobRouter.get("/404", (req, res) => res.status(404).render("404"));
