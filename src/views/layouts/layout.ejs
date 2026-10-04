@@ -444,6 +444,9 @@
       
       <div class="text-center">
         <p class="text-muted">&copy; <%= new Date().getFullYear() %> Easily. All rights reserved.</p>
+        <% if (lastVisit) { %>
+          <small>Last visit: <%= lastVisit %></small>
+        <% } %>
       </div>
     </div>
   </footer>

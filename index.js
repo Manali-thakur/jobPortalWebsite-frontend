@@ -1,8 +1,10 @@
 import express from "express";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import expressEjsLayouts from "express-ejs-layouts";
+import { setLastVisit } from "./src/middleware/lastVisit.middleware.js";
 import userRouter from "./src/routes/user.routes.js";
 import jobRouter from "./src/routes/job.routes.js";
 
@@ -26,6 +28,11 @@ server.set("views", path.join(__dirname, "src", "views"));
 // middleware
 server.use(express.urlencoded({ extended: true }));
 // server.use(express.json()); //read data from req.body
+server.use(cookieParser());
+server.use((req, res, next) => {
+  res.locals.lastVisit = null;
+  next();
+});
 server.use(
   session({
     secret: sessionSecret,
@@ -46,6 +53,7 @@ server.use(express.static(path.join(__dirname, "public"))); //making file public
 server.use("/css", express.static(path.join(__dirname, "src", "views", "css")));
 server.use("/images", express.static(path.join(__dirname, "src", "views", "images")));
 server.use("/uploads", express.static(path.join(__dirname, "uploads")));
+server.use(setLastVisit);
 server.use(expressEjsLayouts);
 server.set("layout", "layouts/layout"); // set default layout
 
