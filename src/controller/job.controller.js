@@ -1,4 +1,5 @@
 import JobModel from "../model/job.model.js";
+import { sendConfirmationMail } from "../middleware/mail.middleware.js";
 
 export default class JobController {
   getJobs(req, res) {
@@ -91,15 +92,22 @@ export default class JobController {
 
   applyToJob(req, res) {
     const { name, email, contact } = req.body;
+    const job = JobModel.findJobById(req.params.id);
+    if (!job) return res.status(404).render("404");
+
     const applicant = JobModel.addApplicant(
-      req.params.id,
+      job.id,
       name,
       email,
       contact,
       req.file ? req.file.filename : "",
     );
     if (!applicant) return res.status(404).render("404");
-    res.redirect(`/jobs/${req.params.id}`);
+
+    sendConfirmationMail(email, name, job).catch((error) => {
+      console.error("Failed to send application confirmation email:", error);
+    });
+    res.redirect(`/jobs/${job.id}`);
   }
 
   getApplicants(req, res) {
